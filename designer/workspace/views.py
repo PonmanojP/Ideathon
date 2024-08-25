@@ -1,9 +1,6 @@
-# canvas_editor/views.py
-
 from django.shortcuts import render
-import google.generativeai as genai  # Import the Google Gemini SDK
+import google.generativeai as genai
 
-# Securely store and configure your Google API key
 GOOGLE_API_KEY = ''
 genai.configure(api_key=GOOGLE_API_KEY)
 
@@ -19,7 +16,7 @@ def canvas_editor_view(request):
         command = request.POST.get('command')
         y.append(command)
 
-        model = genai.GenerativeModel('gemini-pro')  # Specify the correct model for Gemini
+        model = genai.GenerativeModel('gemini-pro') 
         instructions = f'''
                         - Your task is to generate fabric.js code according to the prompt, previous prompts and from your previous response.
                         - According to your previous response you should adjust the code or append more components into the canvas.
@@ -42,7 +39,7 @@ def canvas_editor_view(request):
                         '''
         response = model.generate_content(f"Generate Fabric.js code for the following command: {instructions}")
 
-        generated_code = response.text.strip()  # Adjust the extraction of content based on API response
+        generated_code = response.text.strip()
         x = generated_code
 
     return render(request, 'canvas_editor.html', {'generated_code': generated_code})
