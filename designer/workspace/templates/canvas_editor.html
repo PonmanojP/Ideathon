@@ -1,0 +1,36 @@
+<!-- canvas_editor/templates/canvas_editor.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Editor</title>
+
+</head>
+<body>
+    <h1>Canvas Editor</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="command">Enter Design Command:</label>
+        <input type="text" id="command" name="command" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Generated Code:</h2>
+    <pre>{{ generated_code }}</pre>
+
+    <h2>Canvas:</h2>
+    <canvas id="designCanvas" width="800" height="600" style="border:1px solid #000;"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <script>
+
+                {{ generated_code|safe }}
+
+                var obj = canvas.getActiveObject();
+                var objson = obj.toJSON();
+                console.log(JSON.stringify(objson, null, 2));
+    </script>
+</body>
+</html>
