@@ -5,7 +5,7 @@ GOOGLE_API_KEY = ''
 genai.configure(api_key=GOOGLE_API_KEY)
 
 global x,y
-x = ''
+x = 'AIzaSyDtiq-CBPFG500PMG_UJtO08wf4EQnz9H4'
 y = []
 
 def canvas_editor_view(request):
