@@ -50,6 +50,10 @@ python manage.py runserver
 
 ### Sample Working : 
 - Press ALT key and then you can start talking to the interface to get your items. (better use chrome for voice input)
+- You can copy the rendered image in the left side by using ctrl+c and ctrl+v
+
+![Screenshot 2024-09-08 142614](https://github.com/user-attachments/assets/14b8c4c0-9fcc-4fb4-ad11-dc49ee5c4e0e)
+
   
 ![Screenshot 2024-09-08 160332](https://github.com/user-attachments/assets/0a3a475c-f9a0-496c-8997-f68b85081a59)
 
