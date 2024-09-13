@@ -203,11 +203,20 @@
       <pre id="generatedCode">{{ generated_code }}</pre>
     </div>
 
+
+
     <div class="right-section">
       <canvas id="dummyCanvas" width="800" height="600"></canvas>
       <br>
       
+      <!-- Add color picker for canvas background -->
+      <label for="bgColorPicker" style="position: absolute; bottom: 10px; right: 10px;">
+        <input type="color" id="bgColorPicker" value="#ffffff" title="Choose background color">
+      </label>
     </div>
+
+
+
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
@@ -218,10 +227,7 @@
     let canvas = new fabric.Canvas('designCanvas'); // Initialize existing canvas
     let dummyCanvas = new fabric.Canvas('dummyCanvas'); // Initialize dummy canvas
     let copiedObjects = [];
-  
-    // Initialize the existing canvas with some example objects
-    canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: 100, left: 100 }));
-    canvas.add(new fabric.Rect({ width: 50, height: 50, fill: '#0f0', top: 200, left: 200 }));
+
   
     if ('webkitSpeechRecognition' in window) {
       recognition = new webkitSpeechRecognition();
@@ -348,27 +354,40 @@
   
     // Function to download the dummy canvas as PNG
     function downloadCanvas() {
-      const dataURL = dummyCanvas.toDataURL({
-        format: 'png',
-        quality: 1.0
-      });
-      
-      // Create or reuse the download link element
-      let link = document.getElementById('downloadLink');
-      
-      // If the link doesn't exist, create it
-      if (!link) {
-        link = document.createElement('a');
-        link.id = 'downloadLink';
-        document.body.appendChild(link);
+  // Check if the canvas has images, ensure cross-origin compatibility
+  dummyCanvas.getObjects().forEach(function(obj) {
+    if (obj.type === 'image' && !obj.crossOrigin) {
+        obj.set({
+          crossOrigin: 'anonymous'
+        });
       }
-      
-      link.href = dataURL;
-      link.download = 'dummy-canvas-design.png';
-  
-      // Simulate a click on the link to start the download
-      link.click();
+    });
+
+
+    dummyCanvas.renderAll();
+
+    // Render the canvas and create a data URL
+    const dataURL = dummyCanvas.toDataURL({
+      format: 'png',
+      quality: 1.0
+    });
+
+    // Create or reuse the download link element
+    let link = document.getElementById('downloadLink');
+    
+    // If the link doesn't exist, create it
+    if (!link) {
+      link = document.createElement('a');
+      link.id = 'downloadLink';
+      document.body.appendChild(link);
     }
+    
+    link.href = dataURL;
+    link.download = 'dummy-canvas-design.png';
+
+    // Simulate a click on the link to start the download
+    link.click();
+  }
   
     // Add event listener to download button
     document.getElementById('downloadBtn').addEventListener('click', function() {
@@ -379,6 +398,34 @@
     document.getElementById('submitBtn').addEventListener('click', function() {
       // Prevent any default action and submit command
       submitCommand();
+    });
+
+    function deleteSelected() {
+      const activeObject = dummyCanvas.getActiveObject();
+      if (activeObject) {
+        dummyCanvas.remove(activeObject);
+        dummyCanvas.renderAll();
+      }
+    }
+
+    // Add event listener for the Delete key to remove selected objects
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Delete') {
+        event.preventDefault();
+        deleteSelected();
+      }
+    });
+
+
+    // Function to change the background color of the dummy canvas
+    function changeCanvasBackgroundColor(color) {
+      dummyCanvas.setBackgroundColor(color, dummyCanvas.renderAll.bind(dummyCanvas));
+    }
+
+    // Add event listener for color picker input
+    document.getElementById('bgColorPicker').addEventListener('input', function() {
+      const color = this.value;
+      changeCanvasBackgroundColor(color);
     });
   </script>
   
