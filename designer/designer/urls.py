@@ -5,7 +5,7 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('canvas/', include('workspace.urls')),
+    path('', include('workspace.urls')),
 ]
 
 if settings.DEBUG:

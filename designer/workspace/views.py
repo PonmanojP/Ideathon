@@ -22,6 +22,7 @@ def canvas_editor_view(request):
             'truck' : 'https://w7.pngwing.com/pngs/229/783/png-transparent-yellow-dump-truck-art-transportation-pickup-truck-dump-truck-truck-freight-transport-truck-mode-of-transport-thumbnail.png',
             'ufo' : 'https://static.vecteezy.com/system/resources/previews/011/731/539/non_2x/hand-drawn-ufo-illustration-png.png',
             'sound' : 'https://static.vecteezy.com/system/resources/previews/039/349/642/non_2x/starburst-bomb-blast-big-explosion-abstract-comic-book-explosion-flash-flash-beam-explosion-flash-glow-anime-illustration-on-transparent-background-vector.jpg',
+<<<<<<< HEAD
             'blast' : 'https://static.vecteezy.com/system/resources/previews/041/933/691/non_2x/ai-generated-nuclear-bomb-explosion-isolated-on-transparent-background-free-png.png',
             'phone_icon' : 'https://static.vecteezy.com/system/resources/previews/010/829/986/large_2x/phone-icon-in-trendy-flat-style-free-png.png',
             'insta_icon' : 'https://static.vecteezy.com/system/resources/previews/018/930/692/original/instagram-logo-instagram-icon-transparent-free-png.png',
@@ -29,6 +30,9 @@ def canvas_editor_view(request):
             'coding': 'https://vectorified.com/images/code-icon-5.png',
             'ai_image' : 'https://cdn0.iconfinder.com/data/icons/robotics-4/48/5-Artificial_intelligence-1024.png',
             'school' : 'https://static.vecteezy.com/system/resources/previews/000/396/264/original/kids-learning-and-playing-illustration-vector.jpg'
+=======
+            'blast' : 'https://static.vecteezy.com/system/resources/previews/041/933/691/non_2x/ai-generated-nuclear-bomb-explosion-isolated-on-transparent-background-free-png.png'
+>>>>>>> 5092851a6ef9d8b45ac32c918ff3ada5402f2531
         }
 
         model = genai.GenerativeModel('gemini-pro')
@@ -47,7 +51,11 @@ def canvas_editor_view(request):
                                     canvas.setActiveObject(canvas.item(0));
                                     this.__canvases.push(canvas);
                         - Please dont forget to use the above command for adding shapes. if the user asks for shapes, you have to use the above format only...
+<<<<<<< HEAD
                         
+=======
+                        - Again never start with ```javascript.....
+>>>>>>> 5092851a6ef9d8b45ac32c918ff3ada5402f2531
                         - Never start and end the code with unnecessary text.
                         - you can use only these images---> images = {images}.
                         - format for image insertion is as follows : 
@@ -84,7 +92,11 @@ def canvas_editor_view(request):
 
         generated_code = response.text.strip()
         x = ''
+<<<<<<< HEAD
         print(x)
+=======
+        print(generated_code)
+>>>>>>> 5092851a6ef9d8b45ac32c918ff3ada5402f2531
 
         return JsonResponse({'generated_code': generated_code})
 

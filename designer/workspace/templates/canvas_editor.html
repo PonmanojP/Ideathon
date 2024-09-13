@@ -218,35 +218,35 @@
     let canvas = new fabric.Canvas('designCanvas'); // Initialize existing canvas
     let dummyCanvas = new fabric.Canvas('dummyCanvas'); // Initialize dummy canvas
     let copiedObjects = [];
-
+  
     // Initialize the existing canvas with some example objects
     canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: 100, left: 100 }));
     canvas.add(new fabric.Rect({ width: 50, height: 50, fill: '#0f0', top: 200, left: 200 }));
-
+  
     if ('webkitSpeechRecognition' in window) {
       recognition = new webkitSpeechRecognition();
       recognition.continuous = false;
       recognition.interimResults = false;
       recognition.lang = 'en-US';
-
+  
       recognition.onstart = () => {
         recognizing = true;
         document.getElementById('listeningIndicator').style.display = 'block';
       };
-
+  
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
         document.getElementById('textInput').value = transcript;
       };
-
+  
       recognition.onend = () => {
         document.getElementById('listeningIndicator').style.display = 'none';
         recognizing = false;
-
+  
         // Auto-submit the form when voice recognition ends
         submitCommand();
       };
-
+  
       document.addEventListener('keydown', (event) => {
         if (event.altKey && !recognizing) {
           recognition.start();
@@ -254,7 +254,7 @@
           recognition.stop();
         }
       });
-
+  
       document.getElementById('textInput').addEventListener('keydown', (event) => {
         if (event.altKey) {
           event.preventDefault();
@@ -263,11 +263,11 @@
     } else {
       alert('Speech recognition is not supported in this browser.');
     }
-
+  
     // Function to submit the command via AJAX
     function submitCommand() {
       const command = document.getElementById('textInput').value;
-
+  
       fetch('{% url "canvas_editor" %}', {
         method: 'POST',
         headers: {
@@ -280,15 +280,15 @@
       .then(data => {
         // Update the generated code display
         document.getElementById('generatedCode').textContent = data.generated_code;
-
+  
         // Clear the existing canvas before executing new code
         canvas.clear();
-
+  
         // Execute the backend-generated fabric.js code dynamically
         eval(data.generated_code);
       });
     }
-
+  
     // Enable dragging between canvases
     function setupDragAndDrop() {
       canvas.on('object:moving', (event) => {
@@ -297,7 +297,7 @@
           obj.setCoords();
         }
       });
-
+  
       canvas.on('object:modified', (event) => {
         let obj = event.target;
         if (obj && dummyCanvas.contains(obj)) {
@@ -306,7 +306,7 @@
           dummyCanvas.renderAll();
         }
       });
-
+  
       dummyCanvas.on('object:modified', (event) => {
         let obj = event.target;
         if (obj && canvas.contains(obj)) {
@@ -314,10 +314,10 @@
         }
       });
     }
-
+  
     // Call the setup function to enable drag-and-drop functionality
     setupDragAndDrop();
-
+  
     // Handle keyboard shortcuts for copy and paste
     document.addEventListener('keydown', (event) => {
       if (event.ctrlKey && event.key === 'c') { // Ctrl+C
@@ -328,13 +328,13 @@
         pasteToDummyCanvas();
       }
     });
-
+  
     // Function to copy selected objects from the existing canvas
     function copySelected() {
       copiedObjects = canvas.getActiveObjects().map(obj => fabric.util.object.clone(obj));
       console.log('Copied objects:', copiedObjects);
     }
-
+  
     // Function to paste copied objects to the dummy canvas
     function pasteToDummyCanvas() {
       copiedObjects.forEach(obj => {
@@ -345,33 +345,42 @@
       });
       copiedObjects = []; // Clear copied objects
     }
-
+  
     // Function to download the dummy canvas as PNG
     function downloadCanvas() {
       const dataURL = dummyCanvas.toDataURL({
         format: 'png',
         quality: 1.0
       });
-      const link = document.createElement('a');
+      
+      // Create or reuse the download link element
+      let link = document.getElementById('downloadLink');
+      
+      // If the link doesn't exist, create it
+      if (!link) {
+        link = document.createElement('a');
+        link.id = 'downloadLink';
+        document.body.appendChild(link);
+      }
+      
       link.href = dataURL;
       link.download = 'dummy-canvas-design.png';
-
-      // Create a temporary link element and click it to start download
-      document.body.appendChild(link);
+  
+      // Simulate a click on the link to start the download
       link.click();
-      document.body.removeChild(link);
     }
-
+  
     // Add event listener to download button
     document.getElementById('downloadBtn').addEventListener('click', function() {
       downloadCanvas();
     });
-
+  
     // Submit button trigger for manual submission
     document.getElementById('submitBtn').addEventListener('click', function() {
       // Prevent any default action and submit command
       submitCommand();
     });
   </script>
+  
 </body>
 </html>
