@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 import google.generativeai as genai
 
-GOOGLE_API_KEY = 'AIzaSyDtiq-CBPFG500PMG_UJtO08wf4EQnz9H4'
+GOOGLE_API_KEY = ''
 genai.configure(api_key=GOOGLE_API_KEY)
 
 global x, y
